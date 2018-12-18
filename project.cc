@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "database.h"
 //#include <conio.h>
 
 using namespace std;
@@ -31,6 +32,7 @@ void loginPage();
 void adminPage();
 void staffPage();
 void studentPage();
+bool signIn(string);
 
 
 
@@ -72,27 +74,36 @@ int main(){
 
 void loginPage(){
   system("clear");
+	Database db;
 	string userId;
 	cout<<"Welcome! Please login with your ID: "<<endl;
 	cin>>userId;
+	string user_type = db.fetchStatus(userId);
+	if(signIn(userId)){
 
-	if(userId==array[0]){
-		cout<<endl<<endl;
-		cout<<"Welcome to Admin Page"<<endl;
-		adminPage();
-		cout<<endl<<endl;
+		if(user_type==array[0]){
+			cout<<endl<<endl;
+			cout<<"Welcome to Admin Page"<<endl;
+			adminPage();
+			cout<<endl<<endl;
+		}
+
+		else if(user_type==array[1]){
+
+			cout<<"Welcome to Staff Page"<<endl;
+			staffPage();
+		}
+
+		else if(user_type==array[2]){
+
+			cout<<"Welcome to Student Page"<<endl;
+		}
+			
 	}
-
-	else if(userId==array[1]){
-
-		cout<<"Welcome to Staff Page"<<endl;
-		staffPage();
+	else {
+		cout << "Invalid Details, program terminating....\n";
 	}
-
-	else if(userId==array[2]){
-
-		cout<<"Welcome to Student Page"<<endl;
-	}
+	
 }
 
 
@@ -151,4 +162,12 @@ void staffPage(){		//-------------------------------------------------------Staf
 		cout<<"Welcome"<<endl<<endl;
 	}
 
+}
+
+// for authentication
+bool signIn(string user_id){
+	Database db;
+	if(db.authenticate(user_id)){
+		return true;
+	}
 }

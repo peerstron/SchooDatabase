@@ -52,6 +52,32 @@ struct Database {
 		return user_collect_line;
     }
 
+    bool authenticate(string user_id)
+    {
+        file.open("student.txt");
+        while(!file.eof()){
+            getline(file,user_collect_line);
+            splitString(arr,user_collect_line);
+            if(arr[0] == user_id){
+                return true;
+                break;
+            }
+        }
+    }
+
+    string fetchStatus(string user_id)
+    {
+        file.open("student.txt");
+        while(!file.eof()){
+            getline(file,user_collect_line);
+            splitString(arr,user_collect_line);
+            if(arr[0] == user_id){
+                return arr[7];
+                break;
+            }
+        }   
+    }
+
     void update(School user){
         string e_user;
         string t_user;
@@ -94,11 +120,6 @@ struct Database {
     cout << "User deleted successfully .. " << endl;
 	}
 
-    
-
-
-};
-
     template <size_t N>
 		void splitString(string (&arr)[N], string str){
 		    int n = 0;
@@ -106,5 +127,10 @@ struct Database {
 		    for (auto it = istream_iterator<string>(iss); it != istream_iterator<string>() && n < N; ++it, ++n)
 		        arr[n] = *it;
 		}
+
+
+};
+
+    
 
 #endif
